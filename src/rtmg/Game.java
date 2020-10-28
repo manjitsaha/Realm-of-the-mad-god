@@ -64,7 +64,7 @@ public class Game extends Canvas implements Runnable {
 	public void run() {
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
-		final double ns = 1000000000.0 / 60.0;
+		final double ns = 1000000000.0 / 120.0;
 		double delta = 0;
 		int frames = 0;
 		int updates = 0;
@@ -119,14 +119,17 @@ public class Game extends Canvas implements Runnable {
 
 	private void update() {
 		key.update();
-		if (key.up) y--;
-		
-		if (key.down) y++;
-		
-		if (key.left) x--;
-		
-		if (key.right) x++;
-		
+		if (key.up)
+			y--;
+
+		if (key.down)
+			y++;
+
+		if (key.left)
+			x--;
+
+		if (key.right)
+			x++;
 
 	}
 
@@ -139,6 +142,7 @@ public class Game extends Canvas implements Runnable {
 		game.frame.pack();
 		game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.frame.setLocationRelativeTo(null);
+		game.requestFocus();
 		game.frame.setVisible(true);
 
 		game.start();
