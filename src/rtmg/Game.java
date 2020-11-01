@@ -10,6 +10,8 @@ import java.awt.image.DataBufferInt;
 import javax.swing.JFrame;
 
 import rtmg.input.Keyboard;
+import rtmg.level.Level;
+import rtmg.level.RandomLevel;
 import rtmg.screen.Screen;
 
 public class Game extends Canvas implements Runnable {
@@ -17,7 +19,8 @@ public class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
 	public static int width = 300;
 	public static int height = width / 16 * 9;
-	public static int scale = 3;
+	
+	public static int scale = 5;
 	public static String title = "RTMG";
 
 	private Thread thread;
@@ -25,6 +28,7 @@ public class Game extends Canvas implements Runnable {
 	private Keyboard key;
 	private boolean running = false;
 
+	private Level level;
 	private Screen screen;
 
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -40,6 +44,8 @@ public class Game extends Canvas implements Runnable {
 		screen = new Screen(width, height);
 		frame = new JFrame();
 		key = new Keyboard();
+		
+		level = new RandomLevel(64,64);
 		addKeyListener(key);
 
 	}
@@ -102,12 +108,12 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		screen.clear();
-		screen.render(x, y);
+		level.render(x, y, screen);
 
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = screen.pixels[i];
 		}
-
+		
 		Graphics g = bs.getDrawGraphics();
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
@@ -134,7 +140,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	public static void main(String[] args) {
-
+		
 		Game game = new Game();
 		game.frame.setResizable(false);
 		game.frame.setTitle(Game.title);
