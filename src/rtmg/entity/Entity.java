@@ -11,4 +11,12 @@ public class Entity {
 	protected Level level;
 	protected final Random random = new Random();
 	
+	public void remove() { removed = true;}
+	
+	public boolean isRemoved() {
+		return removed;
+	}
+	
+	
+	
 }
