@@ -1,7 +1,9 @@
 package rtmg;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -9,6 +11,7 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
+import rtmg.entity.mob.Player;
 import rtmg.input.Keyboard;
 import rtmg.level.Level;
 import rtmg.level.RandomLevel;
@@ -20,7 +23,7 @@ public class Game extends Canvas implements Runnable {
 	public static int width = 300;
 	public static int height = width / 16 * 9;
 	
-	public static int scale = 5;
+	public static int scale = 3;
 	public static String title = "RTMG";
 
 	private Thread thread;
@@ -28,13 +31,14 @@ public class Game extends Canvas implements Runnable {
 	private Keyboard key;
 	private boolean running = false;
 
+	private Player player;
 	private Level level;
 	private Screen screen;
 
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
 
-	int x = 0, y = 0;
+
 
 	public Game() {
 
@@ -46,6 +50,7 @@ public class Game extends Canvas implements Runnable {
 		key = new Keyboard();
 		
 		level = new RandomLevel(64,64);
+		player = new Player(key);
 		addKeyListener(key);
 
 	}
@@ -70,7 +75,7 @@ public class Game extends Canvas implements Runnable {
 	public void run() {
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
-		final double ns = 1000000000.0 / 120.0;
+		final double ns = 1000000000.0 / 60.0;
 		double delta = 0;
 		int frames = 0;
 		int updates = 0;
@@ -99,6 +104,14 @@ public class Game extends Canvas implements Runnable {
 		stop();
 
 	}
+	
+	
+	private void update() {
+		key.update();
+		player.update();
+		 
+		
+	}
 
 	private void render() {
 		BufferStrategy bs = getBufferStrategy();
@@ -108,7 +121,10 @@ public class Game extends Canvas implements Runnable {
 		}
 
 		screen.clear();
-		level.render(x, y, screen);
+		int xScroll  = player.x - screen.width/2;
+		int yScroll = player.y - screen.height/2;
+		level.render(xScroll, yScroll, screen);
+		player.render(screen);
 
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = screen.pixels[i];
@@ -117,27 +133,18 @@ public class Game extends Canvas implements Runnable {
 		Graphics g = bs.getDrawGraphics();
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		
+		/*
+		 * g.setColor(Color.black); g.setFont(new Font("Arial",0,16));
+		 * g.drawString("x: "+player.x + " y: "+player.y, 10, 20);
+		 */
 
 		g.dispose();
 		bs.show();
 
 	}
 
-	private void update() {
-		key.update();
-		if (key.up)
-			y--;
-
-		if (key.down)
-			y++;
-
-		if (key.left)
-			x--;
-
-		if (key.right)
-			x++;
-
-	}
+	
 
 	public static void main(String[] args) {
 		

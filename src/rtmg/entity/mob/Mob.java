@@ -9,7 +9,16 @@ public class Mob extends Entity {
 	protected int dir = 0;
 	protected boolean moving = false;
 	
-	public void move() {
+	public void move(int xa , int ya) {
+		if(ya < 0) dir =  0;
+		if(xa > 0) dir = 1;
+		if(ya > 0) dir = 2;
+		if(xa < 0) dir = 3;
+		
+		if(!collison()) {
+			x += xa;
+			y += ya;
+		}
 		
 	}
 	
