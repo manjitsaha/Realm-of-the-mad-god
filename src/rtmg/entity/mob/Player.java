@@ -6,21 +6,27 @@ import rtmg.screen.Sprite;
 
 public class Player extends Mob {
 	private Keyboard input;
+	private Sprite sprite;
+	private int anim = 0;
+	private boolean walking = false;
 
 	public Player(Keyboard input) {
 		this.input = input;
-
+		
 	}
 
 	public Player(int x, int y, Keyboard input) {
 		this.x = x;
 		this.y = y;
 		this.input = input;
+		
 
 	}
 
 	public void update() {
 		int xa = 0, ya = 0;
+		if(anim < 7500) anim++;
+		else anim = 0;
 
 		if (!input.run) {
 			if (input.up)
@@ -47,18 +53,67 @@ public class Player extends Mob {
 				ya -= 2;
 		}
 
-		if (xa != 0 || ya != 0)
+		if (xa != 0 || ya != 0) {
 			move(xa, ya);
+			walking = true;
+		}else {
+			walking = false;
+		}
+		
 
 	}
 
 	public void render(Screen screen) {
-		int xx = x - 16;
-		int yy = y - 16;
-		screen.renderPlayer(xx, yy, Sprite.player0);
-		screen.renderPlayer(xx + 16, yy, Sprite.player1);
-		screen.renderPlayer(xx, yy+ 16, Sprite.player2);
-		screen.renderPlayer(xx + 16, yy + 16, Sprite.player3);
+		int flip = 0;
+		if(dir == 0) {
+			sprite = Sprite.playerUp;
+			if(walking) {
+				if(anim % 20 > 10) {
+					sprite = Sprite.playerUp1;
+				}else {
+					sprite = Sprite.playerUp2;
+				}
+			}
+			}
+		if(dir == 1) {
+			sprite = Sprite.playerSide;
+			if(walking) {
+				if(anim % 20 > 10) {
+					sprite = Sprite.playerSide1;
+				}else {
+					sprite = Sprite.playerSide2;
+				}
+			}
+		}
+		if(dir == 2) {
+			sprite = Sprite.playerDown;
+			if(walking) {
+				if(anim % 20 > 10) {
+					sprite = Sprite.playerDown1;
+				}else {
+					sprite = Sprite.playerDown2;
+				}
+			}
+		}
+		if(dir == 3) {
+			sprite = Sprite.playerSide;
+			flip = 1;
+			if(walking) {
+				if(anim % 20 > 10) {
+					sprite = Sprite.playerSide1;
+				}else {
+					sprite = Sprite.playerSide2;
+				}
+			}
+		}
+		
+		screen.renderPlayer(x-16, y-16, sprite , flip);
+		
+		
+		
+		
+		
+	
 
 	}
 
