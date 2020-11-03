@@ -1,9 +1,7 @@
 package rtmg;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -14,7 +12,7 @@ import javax.swing.JFrame;
 import rtmg.entity.mob.Player;
 import rtmg.input.Keyboard;
 import rtmg.level.Level;
-import rtmg.level.RandomLevel;
+import rtmg.level.SpawnLevel;
 import rtmg.screen.Screen;
 
 public class Game extends Canvas implements Runnable {
@@ -49,8 +47,8 @@ public class Game extends Canvas implements Runnable {
 		frame = new JFrame();
 		key = new Keyboard();
 		
-		level = new RandomLevel(64,64);
-		player = new Player(key);
+		level = new SpawnLevel("res/textures/level.png");
+		player = new Player(10,140,key);
 		addKeyListener(key);
 
 	}
