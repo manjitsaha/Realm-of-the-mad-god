@@ -12,7 +12,7 @@ import javax.swing.JFrame;
 import rtmg.entity.mob.Player;
 import rtmg.input.Keyboard;
 import rtmg.level.Level;
-import rtmg.level.SpawnLevel;
+import rtmg.level.TileCoordinate;
 import rtmg.screen.Screen;
 
 public class Game extends Canvas implements Runnable {
@@ -32,6 +32,7 @@ public class Game extends Canvas implements Runnable {
 	private Player player;
 	private Level level;
 	private Screen screen;
+	private TileCoordinate playerSpawn;
 
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
@@ -48,7 +49,10 @@ public class Game extends Canvas implements Runnable {
 		key = new Keyboard();
 		
 		level = Level.spawnLevel;
-		player = new Player(10,140,key);
+		
+		playerSpawn = new TileCoordinate(20,66);
+		player = new Player(playerSpawn.x(),playerSpawn.y(),key);
+		player.init(level);
 		addKeyListener(key);
 
 	}
