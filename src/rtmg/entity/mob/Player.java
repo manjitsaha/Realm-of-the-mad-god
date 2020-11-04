@@ -1,6 +1,8 @@
 package rtmg.entity.mob;
 
+import rtmg.Game;
 import rtmg.input.Keyboard;
+import rtmg.input.Mouse;
 import rtmg.screen.Screen;
 import rtmg.screen.Sprite;
 
@@ -54,13 +56,27 @@ public class Player extends Mob {
 				ya -= 2;
 		}
 
+		
+
 		if (xa != 0 || ya != 0) {
 			move(xa, ya);
 			walking = true;
 		} else {
 			walking = false;
 		}
+		
+		shooting();
 
+	}
+
+	
+	private void shooting() {
+		if (Mouse.getMouseB() == 1) {
+			double dx = Mouse.getMouseX() - Game.getWindowWidth()/2;
+			double dy = Mouse.getMouseY() - Game.getWindowHeight()/2;
+			double dir = Math.atan2(dy, dx);
+			shoot(x, y, dir);
+		}		
 	}
 
 	public void render(Screen screen) {

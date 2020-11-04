@@ -1,9 +1,7 @@
 package rtmg;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -21,10 +19,12 @@ import rtmg.screen.Screen;
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	public static int width = 300;
-	public static int height = width / 16 * 9;
+	private static int width = 300;
+	private static int height = width / 16 * 9;
 
-	public static int scale = 3;
+	private static int scale = 3;
+	
+
 	public static String title = "RTMG";
 
 	private Thread thread;
@@ -39,6 +39,14 @@ public class Game extends Canvas implements Runnable {
 
 	private BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+	
+	public static int getWindowWidth() {
+		return width * scale;
+	}
+
+	public static int getWindowHeight() {
+		return height * scale;
+	}
 
 	public Game() {
 
@@ -139,11 +147,13 @@ public class Game extends Canvas implements Runnable {
 
 		g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 
-		g.setColor(Color.white);
-		g.setFont(new Font("Arial", 0, 16));
-		g.fillRect(Mouse.getMouseX() - 32,Mouse.getMouseY() - 32, 64, 64);
-		g.drawString("x: " + Mouse.getMouseX() + " y: " + Mouse.getMouseY() +" b: "+Mouse.getMouseB(), 10, 20);
-
+		/*
+		 * g.setColor(Color.white); g.setFont(new Font("Arial", 0, 16));
+		 * g.fillRect(Mouse.getMouseX() - 32,Mouse.getMouseY() - 32, 64, 64);
+		 * g.drawString("x: " + Mouse.getMouseX() + " y: " + Mouse.getMouseY()
+		 * +" b: "+Mouse.getMouseB(), 10, 20);
+		 * 
+		 */
 		g.dispose();
 		bs.show();
 
